@@ -274,24 +274,187 @@ def pregunta_usuari(df):
     else:
         print("Número no válido.")
 
-def pregunta_ordinador(df, Npersonatges):
+def pregunta_ordinador(df):
     numero = random.randint(1, 11)
 
-    if numero == 1:
-        pregunta = random.randint(0, Npersonatges)
-
-        if df.at[pregunta, 'PersonatgeOrdinador'] == True:
-            return "La maquina ha adivinat el personatge!"
+    def case_1(df):
+        num_personatge = random.randint(0, len(df))
+        if df.at[num_personatge, 'PersonatgeOrdinador'] == True:
+            return "Has endevinat el personatge!"
         
-        df.drop(df[pregunta], inplace=True)
+        df.drop(df[num_personatge], inplace=True)
         #eliminar personaje
-        return "Ese no era el personaje :(" 
-    elif numero <= 7:
-        
-    elif numero <= 10:
+        return "Ese no era el personaje :("
 
-    elif numero == 11:
+    def case_2(df):
+        genero = random.choice('home', 'dona')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if row['genere'] == genero:
+                    #eliminar el otro genero del mundo
+                    df.drop(df[df['genere'] != genero].index, inplace=True)
+                    return f"Es {genero}"
+                
+                df.drop(df[df['genere'] == genero].index, inplace=True)
+                return f"No es {genero}"
+            
+        return "eres tonto"
 
-#def eliminar(df, IndexPersonatge):
+    def case_9(df):
+        altura = random.choice('alt', 'baix', 'mitja')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if row['altura'] == altura:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['altura'] != altura].index, inplace=True)
+                    return f"Es {altura}"
+                
+                df.drop(df[df['altura'] == altura].index, inplace=True)
+                return f"No es {altura}"
+            
+        return "eres tonto"
+
+    def case_11(df):
+        ## 4 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
+        color_cabell = random.choice('ros', 'roig', 'moreno', 'fosc')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if color_cabell == row['color cabell']:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['color cabell'] != color_cabell].index, inplace=True)
+                    return f"Es {color_cabell}"
+                
+                df.drop(df[df['color cabell'] == color_cabell].index, inplace=True)
+                return f"No es {color_cabell}"
+            
+        return "eres tonto"
+
+    def case_3(df):
+        ## 5 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
+        pell = random.choice('blanc', 'moreno')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if pell == row['pell']:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['pell'] != pell].index, inplace=True)
+                    return f"Es {pell}"
+                
+                df.drop(df[df['pell'] == pell].index, inplace=True)
+                return f"No es {pell}"
+            
+        return "eres tonto"
+
+    def case_4(df):
+        ## 6 ¿Esta persona tiene barba? (Sí/No)
+        barba = random.choice('si', 'no')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if barba == row['barba']:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['barba'] != barba].index, inplace=True)
+                    return f"Es {barba}"
+                
+                df.drop(df[df['barba'] == barba].index, inplace=True)
+                return f"No es {barba}"
+            
+        return "eres tonto"
+
+    def case_5(df):
+        ## 7 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
+        tipus_cos = random.choice('gros', 'prim')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if tipus_cos == row['tipus cos']:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['tipus cos'] != tipus_cos].index, inplace=True)
+                    return f"Es {tipus_cos}"
+                
+                df.drop(df[df['tipus cos'] == tipus_cos].index, inplace=True)
+                return f"No es {tipus_cos}"
+            
+        return "eres tonto"
+
+    def case_8(df):
+        ## 8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
+        color_ulls = random.choice('blau', 'marro', 'verd')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if color_ulls == row['color ulls']:
+                    #eliminar las otras alturas del mundo
+                    df.drop(df[df['color ulls'] != color_ulls].index, inplace=True)
+                    return f"Es {color_ulls}"
+                
+                df.drop(df[df['color ulls'] == color_ulls].index, inplace=True)
+                return f"No es {color_ulls}"
+            
+        return "eres tonto"
+
+    def case_6(df):
+        ## 9 ¿Lleva esta persona un gorro? (Sí/No)
+        gorro = random.choice('si', 'no')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if row['gorro'] == gorro:
+                    #eliminar el otro genero del mundo
+                    df.drop(df[df['gorro'] != gorro].index, inplace=True)
+                    return f"Es {gorro}"
+                
+                df.drop(df[df['gorro'] == gorro].index, inplace=True)
+                return f"No es {gorro}"
+            
+        return "eres tonto"
+
+    def case_7(df):
+        ulleres = random.choice('si', 'no')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if row['ulleres'] == ulleres:
+                    #eliminar el otro genero del mundo
+                    df.drop(df[df['ulleres'] != ulleres].index, inplace=True)
+                    return f"Es {ulleres}"
+                
+                df.drop(df[df['ulleres'] == ulleres].index, inplace=True)
+                return f"No es {ulleres}"
+
+        return "eres tonto"            
+
+    def case_10(df):
+        edat = random.choice('avi', 'adult', 'nen')
+        for index, row in df.iterrows():
+            if row['PersonatgeOrdinador'] == True:
+                if row['edat'] == edat:
+                    #eliminar el otro genero del mundo
+                    df.drop(df[df['edat'] != edat].index, inplace=True)
+                    return f"Es {edat}"
+                
+                df.drop(df[df['edat'] == edat].index, inplace=True)
+                return f"No es {edat}"
+            
+        return "eres tonto"
+            
+                
+                
+
+
+    # Crear un diccionario que mapea los números a las funciones de caso
+    switch = {
+        1: case_1,
+        2: case_2,
+        3: case_3,
+        4: case_4,
+        5: case_5,
+        6: case_6,
+        7: case_7,
+        8: case_8,
+        9: case_9,
+        10: case_10,
+        11: case_11
+    }
+
+    if numero in switch:
+        accion = switch[numero](df)
+        print(accion)
+    else:
+        print("Número no válido.")
 
 

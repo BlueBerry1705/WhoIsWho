@@ -1,6 +1,7 @@
 from Model.Model import *
 from Vista.Vista import *
 import copy
+
 def main():
     personatges = NumeroPersonatges()
 
@@ -8,8 +9,24 @@ def main():
     df_bot = copy.deepcopy(df)
     print(df)
     
-    print(pregunta_usuari(df))
+    usuario = False
+    ordenador = False
 
-    printer(df)
+    while True:
+        if pregunta_usuari(df) == "Has endevinat el personatge!":
+            usuario = True
+            break
+        
+        if pregunta_ordinador(df) == "Has endevinat el personatge!":
+            ordenador = True
+            break
+    
+    if usuario:
+        printer("L'usuari ha guanyat la partida!")
+    
+    if ordenador:
+        printer("L'ordinador ha guanyat la partida!")
+
+
 
 
