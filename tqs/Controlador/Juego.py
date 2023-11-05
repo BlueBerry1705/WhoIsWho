@@ -1,15 +1,13 @@
 from Model.Model import *
 from Vista.Vista import *
 import copy
-import tkinter as tk
 import datetime
 
 def iniciar_juego():
-    Npersonatges = escollirDificultat()
-    while Npersonatges > 3:
-        Npersonatges = escollirDificultat()
+    dificultad = escollirDificultat()
+    user = nombre()
 
-    personatges = generaPersonatges(extractNombres(Npersonatges))
+    personatges = generaPersonatges(extractNombres(dificultad))
     df = escollirPersonatge(personatges, escollir(personatges))
     df_bot = copy.deepcopy(df)
     print(df)

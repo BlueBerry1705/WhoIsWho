@@ -2,11 +2,11 @@
 
 def MenuPrincipal():
     print('\033[1m\033[4m QUI ES QUI \033[0m')
-    print('1 - Jugar\n 2 - Ranking\n 3 - Exit')
+    print('1 - Jugar\n2 - Ranking\n3 - Exit')
 
     numero = int(input('Introdueix el número: '))
 
-    while numero > 3:
+    while numero > 3 or numero <= 0:
         numero = int(input('Introdueix el número: '))
     
     return numero
@@ -25,16 +25,22 @@ def escollirDificultat():
     print("Escull dificultat introduint el numero 1: facil, 2: mitja, 3: dificil")
     dificultad = int(input("Introduce el número de la dificultad: "))
 
+    while dificultad > 3 or dificultad <= 0:
+        dificultad = int(input("Introduce el número de la dificultad: "))
+
     if dificultad == 1:
         print("Has seleccionado la dificultad fácil.")
     elif dificultad == 2:
         print("Has seleccionado la dificultad media.")
     elif dificultad == 3:
         print("Has seleccionado la dificultad difícil.")
-    else:
-        print("Dificultad no válida. Por favor, selecciona 1, 2 o 3 para la dificultad.")
     
     return dificultad
+
+def nombre():
+    nombre = input("Introdueix el teu nom: ")
+
+    return nombre
 
 
 def mostrar_dataframe_sin_columnas(df):
