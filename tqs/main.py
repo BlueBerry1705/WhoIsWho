@@ -1,3 +1,8 @@
-from Controlador.Controlador import *
+from Controlador.MenuPrincipal import *
+import tkinter as tk
 
-main()
+root = tk.Tk()
+
+root.title("Qui es Qui")
+
+main(root)

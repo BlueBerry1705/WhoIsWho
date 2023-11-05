@@ -4,13 +4,51 @@ import csv
 
 # Genera una lista de nombres aleatorios
 
-def NumeroPersonatges():
-    usuario_input = int(input("Fica numero de Personatges(Maxim 100): "))
-    if  usuario_input >100:
-        while usuario_input > 100:
-            usuario_input = int(input("Fica numero de Personatges(Maxim 100): "))
+def amagarColumnas(df):
+    columnas_a_omitir = ["PersonatgeJugador","PersonatgeOrdinador"]
+    df_temporal = df.drop(columns=columnas_a_omitir)
+    return df_temporal
+def leerleaderboard():
+        nombre_archivo = '../csv/leaderBoard.csv'
+        leaderboard = []  # Lista para almacenar los datos del archivo CSV.
+
     
-    return usuario_input
+        with open(nombre_archivo, 'r') as archivo_csv:
+            lector_csv = csv.reader(archivo_csv)
+            for fila in lector_csv:
+                if len(fila) == 2:
+                    nombre, tiempo = fila
+                    tiempo = float(tiempo)  # Convierte el tiempo a un número decimal.
+                    leaderboard.append((nombre, tiempo))
+
+        # Ordena la lista de acuerdo al tiempo (ascendente).
+        leaderboard.sort(key=lambda x: x[1])
+        return leaderboard
+
+def agregarLeaderBoard(nombre, tiempo):
+    nombre_archivo = '../csv/leaderBoard.csv'
+    # Abre el archivo CSV en modo de agregación (a) o crea uno nuevo si no existe.
+    with open(nombre_archivo, 'a', newline='') as archivo_csv:
+        # Crea un objeto escritor de CSV.
+        escritor_csv = csv.writer(archivo_csv)
+        
+        # Escribe los datos en una fila del archivo CSV.
+        escritor_csv.writerow([nombre, tiempo])
+
+def recuperarPartida():
+    df_bot = pd.read_csv('../csv/partida_guardada_bot.csv')
+    df = pd.read_csv('../csv/partida_usuari.csv')
+
+    return df,df_bot
+
+def NumeroPersonatges(dificultad):
+    if dificultad == 1:
+        num= 10    
+    if dificultad == 2:
+        num= 20
+    if dificultad == 3:
+        num= 30
+    return num
 
 def extractNombres(numeroPersonatges):
     nombre_archivo = "csv/Personatges.csv"
@@ -64,15 +102,13 @@ def generaPersonatges(nombres):
     # Muestra el DataFrame
     return df
 
-def escollirPersonatge(df):
+def escollirPersonatge(df, num_personatge):
     df['PersonatgeJugador'] = False
     df['PersonatgeOrdinador'] = False
     pd.set_option('display.max_rows', None)  # Para mostrar todas las filas
     print(df.to_string())
-   
-    num_persontatge = int(input("Fica numero de Personatge que vols escollir: "))
 
-    df.at[num_persontatge, 'PersonatgeJugador'] = True
+    df.at[num_personatge, 'PersonatgeJugador'] = True
     df.at[random.randint(0, len(df)), 'PersonatgeOrdinador'] = True
 
     return df
@@ -97,7 +133,7 @@ def pregunta_usuari(df):
     def case_1(df):
         num_personatge = int(input("Fica el índex del personatge: "))
         if df.at[num_personatge, 'PersonatgeOrdinador'] == True:
-            return "Has adivinado el personaje!"
+            return "Has endevinat el personatge!"
         
         df.drop(df[num_personatge], inplace=True)
         #eliminar personaje
@@ -115,7 +151,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['genere'] == genero].index, inplace=True)
                 return f"No es {genero}"
             
-        return "eres tonto"
+        
 
     def case_9(df):
         altura = input("Es alt, baix o mitja d'altura? ")
@@ -129,7 +165,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['altura'] == altura].index, inplace=True)
                 return f"No es {altura}"
             
-        return "eres tonto"
+       
 
     def case_11(df):
         ## 4 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
@@ -144,7 +180,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['color cabell'] == color_cabell].index, inplace=True)
                 return f"No es {color_cabell}"
             
-        return "eres tonto"
+       
 
     def case_3(df):
         ## 5 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
@@ -159,7 +195,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['pell'] == pell].index, inplace=True)
                 return f"No es {pell}"
             
-        return "eres tonto"
+        
 
     def case_4(df):
         ## 6 ¿Esta persona tiene barba? (Sí/No)
@@ -174,7 +210,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['barba'] == barba].index, inplace=True)
                 return f"No es {barba}"
             
-        return "eres tonto"
+        
 
     def case_5(df):
         ## 7 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
@@ -189,7 +225,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['tipus cos'] == tipus_cos].index, inplace=True)
                 return f"No es {tipus_cos}"
             
-        return "eres tonto"
+       
 
     def case_8(df):
         ## 8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
@@ -204,8 +240,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['color ulls'] == color_ulls].index, inplace=True)
                 return f"No es {color_ulls}"
             
-        return "eres tonto"
-
+       
     def case_6(df):
         ## 9 ¿Lleva esta persona un gorro? (Sí/No)
         gorro = input("Porta gorro la persona? ")
@@ -219,7 +254,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['gorro'] == gorro].index, inplace=True)
                 return f"No es {gorro}"
             
-        return "eres tonto"
+       
 
     def case_7(df):
         ulleres = input("Porta Ulleres si o no? ")
@@ -233,7 +268,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['ulleres'] == ulleres].index, inplace=True)
                 return f"No es {ulleres}"
 
-        return "eres tonto"            
+       
 
     def case_10(df):
         edat = input("Es un avi, un adult o un nen? ")
@@ -247,7 +282,7 @@ def pregunta_usuari(df):
                 df.drop(df[df['edat'] == edat].index, inplace=True)
                 return f"No es {edat}"
             
-        return "eres tonto"
+      
             
                 
                 
@@ -270,15 +305,18 @@ def pregunta_usuari(df):
 
     if num_pregunta in switch:
         accion = switch[num_pregunta](df)
-        print(accion)
+        return accion
     else:
         print("Número no válido.")
 
 def pregunta_ordinador(df):
     numero = random.randint(1, 11)
 
+    if len(df) == 1:
+        numero = 1
+
     def case_1(df):
-        num_personatge = random.randint(0, len(df))
+        num_personatge = random.randint(0, len(df) - 1)
         if df.at[num_personatge, 'PersonatgeOrdinador'] == True:
             return "Has endevinat el personatge!"
         
@@ -287,7 +325,8 @@ def pregunta_ordinador(df):
         return "Ese no era el personaje :("
 
     def case_2(df):
-        genero = random.choice('home', 'dona')
+        l = ['home', 'dona']
+        genero = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if row['genere'] == genero:
@@ -301,7 +340,8 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_9(df):
-        altura = random.choice('alt', 'baix', 'mitja')
+        l = ['alt', 'baix', 'mitja']
+        altura = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if row['altura'] == altura:
@@ -315,8 +355,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_11(df):
+        l = ['ros', 'roig', 'moreno', 'fosc']
         ## 4 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
-        color_cabell = random.choice('ros', 'roig', 'moreno', 'fosc')
+        color_cabell = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if color_cabell == row['color cabell']:
@@ -330,8 +371,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_3(df):
+        l = ['blanc', 'moreno']
         ## 5 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
-        pell = random.choice('blanc', 'moreno')
+        pell = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if pell == row['pell']:
@@ -345,8 +387,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_4(df):
+        l = ['si', 'no']
         ## 6 ¿Esta persona tiene barba? (Sí/No)
-        barba = random.choice('si', 'no')
+        barba = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if barba == row['barba']:
@@ -360,8 +403,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_5(df):
+        l = ['gros', 'prim']
         ## 7 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
-        tipus_cos = random.choice('gros', 'prim')
+        tipus_cos = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if tipus_cos == row['tipus cos']:
@@ -375,8 +419,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_8(df):
+        l = ['blau', 'marro', 'verd']
         ## 8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
-        color_ulls = random.choice('blau', 'marro', 'verd')
+        color_ulls = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if color_ulls == row['color ulls']:
@@ -390,8 +435,9 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_6(df):
+        l = ['si', 'no']
         ## 9 ¿Lleva esta persona un gorro? (Sí/No)
-        gorro = random.choice('si', 'no')
+        gorro = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if row['gorro'] == gorro:
@@ -405,7 +451,8 @@ def pregunta_ordinador(df):
         return "eres tonto"
 
     def case_7(df):
-        ulleres = random.choice('si', 'no')
+        l = ['si', 'no']
+        ulleres = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if row['ulleres'] == ulleres:
@@ -419,7 +466,8 @@ def pregunta_ordinador(df):
         return "eres tonto"            
 
     def case_10(df):
-        edat = random.choice('avi', 'adult', 'nen')
+        l = ['avi', 'adult', 'nen']
+        edat = random.choice(l)
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
                 if row['edat'] == edat:
@@ -453,7 +501,7 @@ def pregunta_ordinador(df):
 
     if numero in switch:
         accion = switch[numero](df)
-        print(accion)
+        return accion
     else:
         print("Número no válido.")
 
