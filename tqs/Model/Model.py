@@ -106,7 +106,6 @@ def escollirPersonatge(df, num_personatge):
     df['PersonatgeJugador'] = False
     df['PersonatgeOrdinador'] = False
     pd.set_option('display.max_rows', None)  # Para mostrar todas las filas
-    print(df.to_string())
 
     df.at[num_personatge, 'PersonatgeJugador'] = True
     df.at[random.randint(0, len(df)), 'PersonatgeOrdinador'] = True
@@ -114,179 +113,135 @@ def escollirPersonatge(df, num_personatge):
     return df
 
 
-def pregunta_usuari(df):
-   
-    print('''1 ¿Cuál es el nombre de esta persona?
-2 ¿Cuál es el género de esta persona? ¿Es hombre o mujer?
-3 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
-4 ¿Esta persona tiene barba? (Sí/No)
-5 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
-6 ¿Lleva esta persona un gorro? (Sí/No)
-7 ¿Lleva esta persona gafas? (Sí/No)
-8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
-9 ¿Cuál es la altura de esta persona? ¿Es alto, de altura media o bajo?
-10 ¿Cuál es la edad de esta persona? ¿Es un adulto, un niño o un anciano?
-11 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
-''')
-    num_pregunta=int(input("Fica num de la pregunta: "))
-
-    def case_1(df):
-        num_personatge = int(input("Fica el índex del personatge: "))
-        if df.at[num_personatge, 'PersonatgeOrdinador'] == True:
+def pregunta_usuari(df, pregunta, opcio):
+    def case_1(df, opcio):
+        if df.at[opcio, 'PersonatgeOrdinador'] == True:
             return "Has endevinat el personatge!"
         
-        df.drop(df[num_personatge], inplace=True)
+        df.drop(opcio, inplace=True)
         #eliminar personaje
         return "Ese no era el personaje :("
 
-    def case_2(df):
-        genero = input("Es home o dona? ")
+    def case_2(df, opcio):
+        l = ['home', 'dona']
+        cat = l[opcio]
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if row['genere'] == genero:
+                if row['genere'] == cat:
                     #eliminar el otro genero del mundo
-                    df.drop(df[df['genere'] != genero].index, inplace=True)
-                    return f"Es {genero}"
+                    df.drop(df[df['genere'] != cat].index, inplace=True)
+                    return f"Es {cat}"
                 
-                df.drop(df[df['genere'] == genero].index, inplace=True)
-                return f"No es {genero}"
+                df.drop(df[df['genere'] == cat].index, inplace=True)
+                return f"No es {cat}"
             
-        
-
-    def case_9(df):
-        altura = input("Es alt, baix o mitja d'altura? ")
+    def case_9(df, opcio):
+        l = ['alt', 'baix', 'mitja']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if row['altura'] == altura:
+                if row['altura'] == l[opcio]:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['altura'] != altura].index, inplace=True)
-                    return f"Es {altura}"
+                    df.drop(df[df['altura'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['altura'] == altura].index, inplace=True)
-                return f"No es {altura}"
+                df.drop(df[df['altura'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
             
-       
-
-    def case_11(df):
-        ## 4 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
-        color_cabell = input("Es ros, moreno, fosc, roig? ")
+    def case_11(df, opcio):
+        l = ['ros', 'moreno', 'fosc', 'roig']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if color_cabell == row['color cabell']:
+                if l[opcio] == row['color cabell']:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['color cabell'] != color_cabell].index, inplace=True)
-                    return f"Es {color_cabell}"
+                    df.drop(df[df['color cabell'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['color cabell'] == color_cabell].index, inplace=True)
-                return f"No es {color_cabell}"
+                df.drop(df[df['color cabell'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
             
-       
-
-    def case_3(df):
-        ## 5 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
-        pell = input("Es blanc o moreno? ")
+    def case_3(df, opcio):
+        l = ['blanc', 'moreno']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if pell == row['pell']:
+                if l[opcio] == row['pell']:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['pell'] != pell].index, inplace=True)
-                    return f"Es {pell}"
+                    df.drop(df[df['pell'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['pell'] == pell].index, inplace=True)
-                return f"No es {pell}"
+                df.drop(df[df['pell'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
             
-        
-
-    def case_4(df):
-        ## 6 ¿Esta persona tiene barba? (Sí/No)
-        barba = input("Té barba o no? ")
+    def case_4(df, opcio):
+        l = ['si', 'no']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if barba == row['barba']:
+                if l[opcio] == row['barba']:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['barba'] != barba].index, inplace=True)
-                    return f"Es {barba}"
+                    df.drop(df[df['barba'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['barba'] == barba].index, inplace=True)
-                return f"No es {barba}"
+                df.drop(df[df['barba'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
             
-        
-
-    def case_5(df):
-        ## 7 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
-        tipus_cos = input("Quin cos té? Es gros o prim? ")
+    def case_5(df, opcio):
+        l = ['gros', 'prim']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if tipus_cos == row['tipus cos']:
+                if l[opcio] == row['tipus cos']:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['tipus cos'] != tipus_cos].index, inplace=True)
-                    return f"Es {tipus_cos}"
+                    df.drop(df[df['tipus cos'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['tipus cos'] == tipus_cos].index, inplace=True)
-                return f"No es {tipus_cos}"
+                df.drop(df[df['tipus cos'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
             
-       
-
-    def case_8(df):
-        ## 8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
-        color_ulls = input("Te els ulls de color blau, marro o verd? ")
+    def case_8(df, opcio):
+        l = ['blau', 'marro', 'verd']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if color_ulls == row['color ulls']:
+                if l[opcio] == row['color ulls']:
                     #eliminar las otras alturas del mundo
-                    df.drop(df[df['color ulls'] != color_ulls].index, inplace=True)
-                    return f"Es {color_ulls}"
+                    df.drop(df[df['color ulls'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['color ulls'] == color_ulls].index, inplace=True)
-                return f"No es {color_ulls}"
-            
-       
-    def case_6(df):
-        ## 9 ¿Lleva esta persona un gorro? (Sí/No)
-        gorro = input("Porta gorro la persona? ")
+                df.drop(df[df['color ulls'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
+             
+    def case_6(df, opcio):
+        l = ['si', 'no']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if row['gorro'] == gorro:
+                if row['gorro'] == l[opcio]:
                     #eliminar el otro genero del mundo
-                    df.drop(df[df['gorro'] != gorro].index, inplace=True)
-                    return f"Es {gorro}"
+                    df.drop(df[df['gorro'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['gorro'] == gorro].index, inplace=True)
-                return f"No es {gorro}"
-            
-       
+                df.drop(df[df['gorro'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}" 
 
-    def case_7(df):
-        ulleres = input("Porta Ulleres si o no? ")
+    def case_7(df, opcio):
+        l = ['si', 'no']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if row['ulleres'] == ulleres:
+                if row['ulleres'] == l[opcio]:
                     #eliminar el otro genero del mundo
-                    df.drop(df[df['ulleres'] != ulleres].index, inplace=True)
-                    return f"Es {ulleres}"
+                    df.drop(df[df['ulleres'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['ulleres'] == ulleres].index, inplace=True)
-                return f"No es {ulleres}"
+                df.drop(df[df['ulleres'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
 
-       
-
-    def case_10(df):
-        edat = input("Es un avi, un adult o un nen? ")
+    def case_10(df, opcio):
+        l = ['avi', 'adult', 'nen']
         for index, row in df.iterrows():
             if row['PersonatgeOrdinador'] == True:
-                if row['edat'] == edat:
+                if row['edat'] == l[opcio]:
                     #eliminar el otro genero del mundo
-                    df.drop(df[df['edat'] != edat].index, inplace=True)
-                    return f"Es {edat}"
+                    df.drop(df[df['edat'] != l[opcio]].index, inplace=True)
+                    return f"Es {l[opcio]}"
                 
-                df.drop(df[df['edat'] == edat].index, inplace=True)
-                return f"No es {edat}"
-            
-      
-            
-                
-                
-
+                df.drop(df[df['edat'] == l[opcio]].index, inplace=True)
+                return f"No es {l[opcio]}"
 
     # Crear un diccionario que mapea los números a las funciones de caso
     switch = {
@@ -303,8 +258,8 @@ def pregunta_usuari(df):
         11: case_11
     }
 
-    if num_pregunta in switch:
-        accion = switch[num_pregunta](df)
+    if pregunta in switch:
+        accion = switch[pregunta](df, opcio)
         return accion
     else:
         print("Número no válido.")
@@ -320,7 +275,7 @@ def pregunta_ordinador(df):
         if df.at[num_personatge, 'PersonatgeOrdinador'] == True:
             return "Has endevinat el personatge!"
         
-        df.drop(df[num_personatge], inplace=True)
+        df.drop(num_personatge, inplace=True)
         #eliminar personaje
         return "Ese no era el personaje :("
 
