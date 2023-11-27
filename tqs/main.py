@@ -1,3 +1,4 @@
 from Controlador.MenuPrincipal import *
 
-main()
+if __name__ == '__main__': 
+    main()

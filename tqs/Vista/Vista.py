@@ -18,13 +18,18 @@ def MenuPrincipal():
 
 def mostraLeaderboard(leaderboard):
         clear_screen()
-        # Ordena la lista de acuerdo al tiempo (ascendente).
+        # Ordena la llista d'acuerdo al temps
         leaderboard.sort(key=lambda x: x[1])
 
-        # Muestra el leaderboard.
+        # Mosta el leaderboard.
         print("Leaderboard:")
         for i, (nombre, tiempo) in enumerate(leaderboard, start=1):
             print(f"{i}. {nombre}: {tiempo} segundos")
+
+        numero = 1
+
+        while numero != 0:
+            numero = int(input('Per tornar al Menú Principal, pren 0: '))
 
 def escollirDificultat():
     clear_screen()
@@ -67,17 +72,17 @@ def escollir(df):
 
 def vista_preguntes(df):
     mostrar_dataframe_sin_columnas(df)
-    print('''1 ¿Cuál es el nombre de esta persona?
-2 ¿Cuál es el género de esta persona? ¿Es hombre o mujer?
-3 ¿Cuál es el tono de piel de esta persona? ¿Es blanco o moreno?
-4 ¿Esta persona tiene barba? (Sí/No)
-5 ¿Cómo es el tipo de cuerpo de esta persona? ¿Es gordo o delgado?
-6 ¿Lleva esta persona un gorro? (Sí/No)
-7 ¿Lleva esta persona gafas? (Sí/No)
-8 ¿De qué color son los ojos de esta persona? ¿Son azules, marrones o verdes?
-9 ¿Cuál es la altura de esta persona? ¿Es alto, de altura media o bajo?
-10 ¿Cuál es la edad de esta persona? ¿Es un adulto, un niño o un anciano?
-11 ¿De qué color es el cabello de esta persona? ¿Es rubio, moreno, oscuro o rojo?
+    print('''1 El teu personatge es...?
+2 El teu personatge es home o dona?
+3 El teu personatge té la pell blanca o morena?
+4 El teu personatge té barba? (Sí/No)
+5 El teu personatge es gros o prim?
+6 El teu personatge té un gorro? (Sí/No)
+7 El teu personatge té gafas? (Sí/No)
+8 El teu personatge té els ulls de color blau, marro o verd?
+9 El teu personatge es alt, mitja o petit?
+10 El teu personatge es un adult, un nen o un avi?
+11 El teu personatge té el cabell ros, moreno, fosc o roig?
 
 0 - Sortir de la partida
 ''')
@@ -115,10 +120,10 @@ def vista_preguntes(df):
         return num_pregunta, altura
 
     def case_11():
-        print("Té el cabell...\n0 - Ros\n1 - Moreno\n2 - Fosc\n3 - Roig")
+        print("Té el cabell...\n0 - Ros\n1 - Moreno\n2 - Fosc")
         color_cabell = int(input("Introdueix número: "))
 
-        while color_cabell < 0 or color_cabell > 3:
+        while color_cabell < 0 or color_cabell > 2:
             color_cabell = int(input("Introdueix número: "))
             
         return num_pregunta, color_cabell
@@ -188,8 +193,8 @@ def vista_preguntes(df):
     
     def case_0():
         return num_pregunta, 0
-
-    # Crear un diccionario que mapea los números a las funciones de caso
+    
+    # Crear un diccionari que mapeja els números a las funcions de case
     switch = {
         0: case_0,
         1: case_1,
@@ -218,3 +223,11 @@ def resultat_preguntes(pregU, pregO):
     print(f'\033[34mPregunta Usuari:\033[39m \033[33m{pregU}\033[39m')
     print(f'\033[34mPregunta Ordinador:\033[39m \033[33m{pregO}\033[39m')
     
+def vuelta_menu():
+    numero = 1
+
+    while numero != 0:
+        numero = int(input('Per tornar al Menú Principal, pren 0: '))
+
+def final(respuesta):
+    print(respuesta)
